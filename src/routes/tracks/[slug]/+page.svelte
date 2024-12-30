@@ -21,6 +21,10 @@
 
 	onMount(async () => {
 		devices = await $spotifyPlayer.player.getAvailableDevices();
+        // set a timer to check for active device every 5 seconds
+        setInterval(async () => {
+            devices = await $spotifyPlayer.player.getAvailableDevices();
+        }, 5000);
 		await $spotifyPlayer?.player.startResumePlayback('', undefined, [`spotify:track:${track.id}`]);
 	});
 </script>
@@ -31,13 +35,13 @@
 	</h1>
 {/await}
 
-<div class="content-center">
+<div class="card p-2 m-2">
 	<ul>
 		{#each track.times as bookmark}
 			<li>
 				<div class="flex items-center space-x-2 vertical-center">
 					<input
-						class="input w-20 rounded-none"
+						class="input w-20 rounded-none p-1 m-1"
 						type="text"
 						placeholder="note"
 						bind:value={bookmark.name}
@@ -45,10 +49,10 @@
 
 					<button
 						type="button"
-						class="btn-icon variant-filled"
+						class="btn-group variant-filled"
 						onclick={() => seekToPosition(bookmark.time)}
 					>
-						<span>{bookmark.time}</span>
+                        <span class="m-2">{(bookmark.time / 1000).toFixed(2)} ms</span>
 					</button>
 
 					<button
@@ -63,17 +67,19 @@
 		{/each}
 	</ul>
 </div>
-<div>
-	<button
-		type="button"
-		class="btn-base rounded-3xl variant-filled-primary"
-		onclick={() => bookMarkCurrentPosition(track, $spotifyPlayer)}
-	>
-    <span>bookmark</span>
-	</button>
+
+<div class="card p-2 m-2">
     {#if hasActiveDevice}
         <p>Active device: {devices?.devices.find((device) => device.is_active === true)?.name}</p>
+        <button
+            type="button"
+            class="btn-base rounded-3xl variant-filled-primary m-2"
+            onclick={() => bookMarkCurrentPosition(track, $spotifyPlayer)}
+        >
+            <span>bookmark</span>
+        </button>
     {:else}
-        <p>No active device</p>
+        <p class="m-2">No active device</p>
+        <p>Open spotify on one of your devices.</p>
     {/if}
 </div>
