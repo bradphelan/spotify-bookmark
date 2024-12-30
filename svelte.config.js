@@ -15,6 +15,9 @@ const config = {
 			fallback: 'index.html',
 			strict: false
 		}),
+		paths : {
+			base: process.env.NODE_ENV == 'production' ?  '/brad-spotify' : ''
+		},
 		prerender: {
 			entries: []
 		}
