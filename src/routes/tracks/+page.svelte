@@ -1,9 +1,15 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { tracks, resetTracks } from '$lib/tracks.svelte';
+	import { tracks, resetTracks, addTrackUri } from '$lib/tracks.svelte';
 	import { spotifyPlayer, isPlayerReady } from '$lib/stores/spotify';
 
 	let addingTrack = false;
+    let addingTrackUrl = '';
+
+    let addTrack = async (url:string) => {
+        await addTrackUri($spotifyPlayer, url);
+        addingTrack = false;
+    };
 </script>
 
 <h1>Tracks</h1>
@@ -14,10 +20,11 @@
         {/await}
 	{/each}
 </ul>
-<button on:click={() => (addingTrack = !addingTrack)}>Add Track</button>
 {#if addingTrack}
-	<input type="text" bind:value={tracks.newTrackName} />
-	<button on:click={tracks.addTrack()}>Add</button>
+    <input type="text" placeholder="https://open.spotify.com/track/3nIkYXtATtMlRaJsn8Ijh9?si=f61b2c1bfb4a4831" bind:value={addingTrackUrl} style="width:100%" />
+	<button onclick={()=>addTrack(addingTrackUrl)}>Add</button>
+{:else}
+    <button onclick={() => (addingTrack = !addingTrack)}>Add Track</button>
+    <button onclick={()=>resetTracks()}>Reset Tracks</button>
 {/if}
 
-<button on:click={resetTracks()}>Reset Tracks</button>

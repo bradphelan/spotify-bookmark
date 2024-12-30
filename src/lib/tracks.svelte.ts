@@ -1,4 +1,6 @@
 import { LocalStorage } from "./storage.svelte";
+import { spotifyPlayer, isPlayerReady } from '$lib/stores/spotify';
+import type { SpotifyApi } from "@spotify/web-api-ts-sdk";
 
 export interface Track {
   id: string; // guid
@@ -17,6 +19,23 @@ export const findTrack = (id: string) => {
     return tracks.current.find((track) => track.id === id);
 }
 
+/// Adds a track to the list of tracks
+/// The format of the track is as follows:
+/// https://open.spotify.com/track/3nIkYXtATtMlRaJsn8Ijh9?si=2921dc125c6f4d3a
+/// The actual id is '3nIkYXtATtMlRaJsn8Ijh9' and needs to be extracted
+export const addTrackUri = async (player:SpotifyApi, trackURI: string) => {
+    let id = trackURI.split("/").pop();
+    if (id) {
+        let track = await player.tracks.get(id);
+        if (track) {
+            tracks.current.push({
+                id: track.id,
+                times: []
+            });
+        }
+    }
+    
+}
 
 
 export const resetTracks = () => {

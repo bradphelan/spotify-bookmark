@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 import { SpotifyApi, type AccessToken } from '@spotify/web-api-ts-sdk';
 
-export const spotifyPlayer = writable<SpotifyApi|undefined>();
+export const spotifyPlayer = writable<SpotifyApi>();
 export const isPlayerReady = writable(false);
 export const isLoginInProgress = writable(false);
 const clientId = "b6e8a090fcd3474ea29f034b6d3bf81c"
