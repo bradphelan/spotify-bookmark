@@ -16,7 +16,7 @@ const config = {
 			strict: false
 		}),
 		paths : {
-			base: process.env.NODE_ENV == 'production' ?  '/brad-spotify' : ''
+			base: process.env.NODE_ENV == 'production' ?  '/spotify-bookmark' : ''
 		},
 		prerender: {
 			entries: []
