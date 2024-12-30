@@ -2,12 +2,15 @@ import { LocalStorage } from "./storage.svelte";
 import { spotifyPlayer, isPlayerReady } from '$lib/stores/spotify';
 import type { SpotifyApi } from "@spotify/web-api-ts-sdk";
 
-export interface Track {
-  id: string; // guid
-  name: string;
-  times: number[];
+export interface Bookmark {
+    time: number;
+    name: string;
 }
 
+export interface Track {
+  id: string; // guid
+  times: Bookmark[];
+}
 
 export const tracks = new LocalStorage<Track[]>("tracks", []);
 
@@ -18,6 +21,19 @@ export const addTrack = (track: Track) => {
 export const findTrack = (id: string) => {
     return tracks.current.find((track) => track.id === id);
 }
+
+export const bookMarkCurrentPosition = async (track:Track, api: SpotifyApi) => {
+    const state = await api.player.getPlaybackState();
+    if(state===undefined) return;
+    track.times.push({time:state.progress_ms, name:""});
+    track.times.sort((a, b) => a.time - b.time);
+};
+
+export const removeBookmark = async (t:Track, m:Bookmark) => {
+    if (confirm('Are you sure you want to remove this bookmark?')) {
+        t.times = t.times.filter(c=> c.time !== m.time);
+    }
+};
 
 /// Adds a track to the list of tracks
 /// The format of the track is as follows:
@@ -41,18 +57,15 @@ export const resetTracks = () => {
     tracks.current = [
         {
             id: "43cCZRdT1nybOMWrjimFWB",
-            name: "Stay",
-            times: [].map((time) => time * 1000)
+            times: []
         },
         {
             id: "60lMbWaSNuUhwYxG0atyC3",
-            name: "Enjoy the ride",
-            times: [].map((time) => time * 1000)
+            times: []
         },
         {
             id: "5iufhaKI3OSxCDj86dJGK5",
-            name: "Calentura",
-            times: [].map((time) => time * 1000)
+            times: []
         }
     ];
 }
