@@ -23,6 +23,7 @@
 {#if addingTrack}
     <input type="text" placeholder="https://open.spotify.com/track/3nIkYXtATtMlRaJsn8Ijh9?si=f61b2c1bfb4a4831" bind:value={addingTrackUrl} style="width:100%" />
 	<button onclick={()=>addTrack(addingTrackUrl)}>Add</button>
+    <p>Simply select a spotify track within the main spotify app and share the URI to clipboard. Then paste it here</p>
 {:else}
     <button onclick={() => (addingTrack = !addingTrack)}>Add Track</button>
     <button onclick={()=>resetTracks()}>Reset Tracks</button>

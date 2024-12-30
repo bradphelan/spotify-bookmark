@@ -34,9 +34,7 @@ export const addTrackUri = async (player:SpotifyApi, trackURI: string) => {
             });
         }
     }
-    
 }
-
 
 export const resetTracks = () => {
     // Fill tracks with lorem ipsum data
