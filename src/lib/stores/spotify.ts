@@ -10,7 +10,7 @@ const spotifyStorageKey = "spotify-sdk:AuthorizationCodeWithPKCEStrategy:token"
 const scopes = ['user-read-playback-state', 'user-modify-playback-state', 'user-read-currently-playing', 'streaming']
 
 const redirectUri = mode === 'production' ?
- 'https://bradphelan.github.io/spotify-bookmark/' :
+ 'https://bradphelan.github.io/spotify-bookmark' :
  'http://localhost:5173';
 
 export const authSpotify = () => {
