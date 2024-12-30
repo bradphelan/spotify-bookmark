@@ -18,6 +18,10 @@ export const addTrack = (track: Track) => {
   tracks.current.push(track);
 };
 
+export const removeTrack = (track: Track) => {
+    tracks.current = tracks.current.filter((t:Track) => t.id !== track.id);
+}
+
 export const findTrack = (id: string) => {
     return tracks.current.find((track) => track.id === id);
 }

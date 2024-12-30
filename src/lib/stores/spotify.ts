@@ -15,6 +15,5 @@ export const authSpotify = () => {
         const sdk = SpotifyApi.withAccessToken(clientId, token);
         spotifyPlayer.set(sdk);
         isPlayerReady.set(true);
-        app.current.isLoginInProgress = false;
     });
 }
