@@ -54,7 +54,7 @@
 				<p>Open spotify on one of your devices and play a tune on it to activate it.</p>
 			{/if}
 			<p>© 2025 Brad Phelan</p>
-			<p><a href="/privacy">privacy policy</a></p>
+			<p><a href="{base}/privacy">privacy policy</a></p>
 		</div>
 	</svelte:fragment>
 </AppShell>
