@@ -1,14 +1,19 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { tracks, resetTracks, addTrackUri, removeTrack } from '$lib/tracks.svelte';
+	import { tracks, resetTracks, addTrackUri, removeTrack, type Track } from '$lib/tracks.svelte';
 	import { playbackState, spotifyPlayer, currentTrack} from '$lib/stores/spotify';
 	import type { PlaybackState } from '@spotify/web-api-ts-sdk';
 	import { base } from '$app/paths';
 
 
 	let addTrack = async () => {
-		if ($currentTrack && $spotifyPlayer) await addTrackUri($spotifyPlayer, currentTrack?.item.href);
+		if ($currentTrack && $spotifyPlayer) await addTrackUri($spotifyPlayer, $currentTrack?.href);
 	};
+
+	let currentTrackIsOnList = $derived.by(()=>{
+		return $currentTrack && tracks.current.find((t:Track) => t.id === $currentTrack?.id);
+	});
+
 </script>
 
 <div style="padding: 1rem; border: 1px solid #ccc; background-color: #f9f9f9;">
@@ -38,6 +43,11 @@
 	by 
 	<span class="text-green-900">{$currentTrack?.artists.map((artist) => artist.name).join(', ')}</span>
 	</h3>
-	<button class="btn-base variant-filled-primary" onclick={addTrack}>Add Track</button>
+	{#if currentTrackIsOnList}
+		<p>This track is already on the list</p>
+	{/if}
+	{#if !currentTrackIsOnList}
+		<button class="btn-base variant-filled-primary" onclick={addTrack}>Add Track</button>
+	{/if}
 {/if}
 <button class="btn-base variant-filled-secondary" onclick={() => resetTracks()}>Reset Tracks</button>
