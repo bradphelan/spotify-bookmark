@@ -33,7 +33,7 @@
 
 <div class="card p-2 m-2">
 	<ul>
-		{#each track.times as bookmark (bookmark.time)}
+		{#each track.times as bookmark }
 			<li>
 				<div class="flex items-center space-x-2 vertical-center">
 					<input

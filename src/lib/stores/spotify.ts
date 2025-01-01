@@ -1,5 +1,5 @@
 import { writable, derived, readable, type Readable } from 'svelte/store';
-import { SpotifyApi, type AccessToken, type Device, type Devices } from '@spotify/web-api-ts-sdk';
+import { SpotifyApi, type AccessToken, type Device, type Devices, type PlaybackState, type Track as TrackInfo} from '@spotify/web-api-ts-sdk';
 const mode = import.meta.env.MODE;
 
 export const spotifyPlayer = writable<SpotifyApi|undefined>();
@@ -22,13 +22,24 @@ export const devices = derived(spotifyPlayer, (player, set: (value: Devices | un
     return () => clearInterval(interval);
 });
  
-export const playbackState = derived(spotifyPlayer, (player, set) => {
+export const playbackState = derived(spotifyPlayer, (player, set: (value: PlaybackState|undefined)=>void) => {
     const interval = setInterval(async () => {
         if (player) {
-            set(player.player.getCurrentlyPlayingTrack())
+            set(await player.player.getCurrentlyPlayingTrack())
         }
     }, devicesPollingInterval);
     return () => clearInterval(interval);
+});
+
+export const currentTrack:Readable<TrackInfo|undefined> = derived(playbackState, ($playbackState, set) => {
+    if ($playbackState) {
+        let cleanup = spotifyPlayer.subscribe(async (player) => {
+            let track = await player?.tracks.get($playbackState.item.id);
+            set(track);
+        });
+        return cleanup;
+    }
+    return ()=>{};
 });
 
 export const activeDevice:Readable<Device|undefined> = derived(devices, ($devices:Devices|undefined)=>{
