@@ -1,12 +1,12 @@
 <script lang="ts">
 	import type { Track } from '$lib/tracks.svelte';
 	import { bookMarkCurrentPosition, removeBookmark } from '$lib/tracks.svelte';
-	import { SpotifyApi, type Device, type Devices, type Track as SpotifyTrack } from '@spotify/web-api-ts-sdk';
+	import { type Track as SpotifyTrack } from '@spotify/web-api-ts-sdk';
 	let { data } = $props();
 	let track: Track = data.track;
 
 	import { onMount } from 'svelte';
-	import { activeDevice, spotifyPlayer} from '$lib/stores/spotify';
+	import { activeDevice, spotifyPlayer, currentTrack, playbackState} from '$lib/stores/spotify';
 	import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
 
 	const seekToPosition = async (ms: number) => {
@@ -90,6 +90,7 @@
 		disabled={!$activeDevice}
 		class:variant-filled-surface={$activeDevice}
 	>
-		<span class="span">bookmark</span>
+		<span class="span">bookmark track </span>
 	</button>
+	@ {($playbackState?.progress_ms / 1000).toFixed(2)} s 
 </div>

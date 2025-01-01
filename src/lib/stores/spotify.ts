@@ -6,7 +6,7 @@ export const spotifyPlayer = writable<SpotifyApi|undefined>();
 
 const clientId = "b6e8a090fcd3474ea29f034b6d3bf81c"
 
-const devicesPollingInterval = 5000;
+const devicesPollingInterval = 0.5 * 1000;
 
 const scopes = ['user-read-playback-state', 'user-modify-playback-state', 'user-read-currently-playing', 'streaming']
 
@@ -22,7 +22,7 @@ export const devices = derived(spotifyPlayer, (player, set: (value: Devices | un
     return () => clearInterval(interval);
 });
  
-export const playbackState = derived(spotifyPlayer, (player, set: (value: PlaybackState|undefined)=>void) => {
+export const playbackState:Readable<PlaybackState|undefined> = derived(spotifyPlayer, (player, set: (value: PlaybackState|undefined)=>void) => {
     const interval = setInterval(async () => {
         if (player) {
             set(await player.player.getCurrentlyPlayingTrack())
