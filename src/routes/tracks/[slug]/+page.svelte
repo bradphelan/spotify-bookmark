@@ -48,7 +48,7 @@
 						class="btn-group variant-filled"
 						onclick={() => seekToPosition(bookmark.time)}
 					>
-                        <span class="m-2">{(bookmark.time / 1000).toFixed(2)} ms</span>
+                        <span class="m-2">{(bookmark.time / 1000).toFixed(2)}</span>
 					</button>
                     <button
                         type="button"
