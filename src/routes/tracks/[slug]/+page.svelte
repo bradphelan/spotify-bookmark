@@ -25,8 +25,10 @@
 	});
 </script>
 
-<h1 class="h1">
-    {trackInfo?.name} by {trackInfo?.artists.map((artist) => artist.name).join(', ')}
+<h1 class="h2" >
+	<span class="text-green-900">{trackInfo?.name}</span> 
+	by 
+	<span class="text-green-900">{trackInfo?.artists.map((artist) => artist.name).join(', ')}</span>
 </h1>
 
 <div class="card p-2 m-2">

@@ -32,18 +32,11 @@
 
 <AppShell>
 	<svelte:fragment slot="header">
-		<AppBar>Spotify Bookmarks</AppBar>
-		<TabGroup
-			justify="justify-left"
-			active="variant-filled-surface"
-			hover="hover:variant-soft-primary"
-			flex="flex-1 lg:flex-none"
-			rounded=""
-			border=""
-			class="bg-surface-100-800-token w-full"
-		>
-			<TabAnchor href="{base}/tracks">Tracks</TabAnchor>
-		</TabGroup>
+		<AppBar>
+            <svelte:fragment slot="lead"><a href="{base}/tracks">All tracks</a></svelte:fragment>
+            <h1 class="h1">Spotify Bookmarks</h1>
+            <svelte:fragment slot="trail"><a href="https://github.com/bradphelan/spotify-bookmark">github</a></svelte:fragment>
+        </AppBar>
 	</svelte:fragment>
 
 	{#if $spotifyPlayer}
