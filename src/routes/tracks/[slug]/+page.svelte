@@ -23,12 +23,21 @@
 	onMount(async () => {
 		devices = await $spotifyPlayer.player.getAvailableDevices();
         // set a timer to check for active device every 5 seconds
-        setInterval(async () => {
+        let interval = setInterval(async () => {
             devices = await $spotifyPlayer.player.getAvailableDevices();
         }, 5000);
-		await $spotifyPlayer?.player.startResumePlayback('', undefined, [`spotify:track:${track.id}`]);
+
+		try {
+			await $spotifyPlayer?.player.startResumePlayback('', undefined, [`spotify:track:${track.id}`]);
+		} catch (error) {
+			console.error('Error starting playback:', error);
+		}
 
         trackInfo = (await $spotifyPlayer?.tracks.get(track.id));
+
+		return () => {
+			clearInterval(interval);
+		}
 	});
 </script>
 
@@ -81,22 +90,27 @@
 
 				</div>
 			</li>
+		{:else}
+			<li>No bookmarks</li>
 		{/each}
 	</ul>
 </div>
 
 <div class="card p-2 m-2">
+	<button
+		type="button"
+		class="btn-base rounded-3xl m-2 variant-filled-primary"
+		onclick={() => bookMarkCurrentPosition(track, $spotifyPlayer)}
+		disabled={!hasActiveDevice}
+		class:variant-filled-surface={hasActiveDevice}
+		class:variant-filled-={!hasActiveDevice}
+	>
+		<span class="span">bookmark</span>
+	</button>
     {#if hasActiveDevice}
         <p>Active device: {devices?.devices.find((device) => device.is_active === true)?.name}</p>
-        <button
-            type="button"
-            class="btn-base rounded-3xl variant-filled-primary m-2"
-            onclick={() => bookMarkCurrentPosition(track, $spotifyPlayer)}
-        >
-            <span>bookmark</span>
-        </button>
     {:else}
-        <p class="m-2">No active device</p>
-        <p>Open spotify on one of your devices.</p>
+        <p class="text-error-900 text-xl">No active spotify device</p>
+        <p>Open spotify on one of your devices and play a tune on it to activate it.</p>
     {/if}
 </div>

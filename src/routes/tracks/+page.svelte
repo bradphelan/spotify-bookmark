@@ -3,6 +3,7 @@
 	import { tracks, resetTracks, addTrackUri, removeTrack } from '$lib/tracks.svelte';
 	import { spotifyPlayer, isPlayerReady } from '$lib/stores/spotify';
 	import type { PlaybackState } from '@spotify/web-api-ts-sdk';
+	import { base } from '$app/paths';
 
 	let currentTrack = $state<PlaybackState | undefined>();
 
@@ -30,7 +31,7 @@
 		{#each tracks.current as track}
 				<li class="list-item">
 			{#await $spotifyPlayer?.tracks.get(track.id) then trackInfo}
-					<span><a class="flex-auto" href={`/tracks/${track.id}`}>{trackInfo?.name}</a></span>
+					<span><a class="flex-auto" href="{base}/tracks/{track.id}">{trackInfo?.name}</a></span>
 			{/await}
 
             <button
@@ -49,4 +50,3 @@
 	<button class="btn-base" onclick={addTrack}>Add Track</button>
 {/if}
 <button class="btn-base" onclick={() => resetTracks()}>Reset Tracks</button>
-x{currentTrack?.item.href}y

@@ -3,6 +3,7 @@
 	import { authSpotify,  spotifyPlayer, isPlayerReady } from '$lib/stores/spotify';
     import { AppBar, AppShell, TabAnchor, TabGroup} from '@skeletonlabs/skeleton';
     import "../app.css"
+	import { base } from '$app/paths';
     onMount(() => {
         authSpotify();
     });
@@ -20,7 +21,7 @@
         border=""
         class="bg-surface-100-800-token w-full"
     >
-        <TabAnchor href="/tracks">Tracks</TabAnchor>
+        <TabAnchor href="{base}/tracks">Tracks</TabAnchor>
     </TabGroup>
 </svelte:fragment>
 
