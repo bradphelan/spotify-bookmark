@@ -93,4 +93,32 @@
 		<span class="span">bookmark track </span>
 	</button>
 	@ {($playbackState?.progress_ms / 1000).toFixed(2)} s 
+	<br/>
+	<button
+		type="button"
+		class="btn-base rounded-3xl m-2 variant-filled-primary"
+		onclick={() => { if($activeDevice?.id) $spotifyPlayer?.player.startResumePlayback($activeDevice.id) ;}}
+		disabled={!$activeDevice}
+		class:variant-filled-surface={$activeDevice}
+	>
+		<span class="span">start</span>
+	</button>
+	<button
+		type="button"
+		class="btn-base rounded-3xl m-2 variant-filled-primary"
+		onclick={() => { if($activeDevice?.id) $spotifyPlayer?.player.pausePlayback($activeDevice.id) ;}}
+		disabled={!$activeDevice}
+		class:variant-filled-surface={$activeDevice}
+	>
+		<span class="span">stop</span>
+	</button>
+	<button
+		type="button"
+		class="btn-base rounded-3xl m-2 variant-filled-primary"
+		onclick={() => {if ($spotifyPlayer) seekToPosition(0);}}
+		disabled={!$activeDevice}
+		class:variant-filled-surface={$activeDevice}
+	>
+		<span class="span">from 0</span>
+	</button>
 </div>
