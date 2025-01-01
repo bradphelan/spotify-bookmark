@@ -1,5 +1,5 @@
 import { LocalStorage } from "./storage.svelte";
-import { spotifyPlayer, isPlayerReady } from '$lib/stores/spotify';
+import { spotifyPlayer} from '$lib/stores/spotify';
 import type { SpotifyApi } from "@spotify/web-api-ts-sdk";
 
 export interface Bookmark {
@@ -23,7 +23,7 @@ export const removeTrack = (track: Track) => {
 }
 
 export const findTrack = (id: string) => {
-    return tracks.current.find((track) => track.id === id);
+    return tracks.current.find((track:Track) => track.id === id);
 }
 
 export const bookMarkCurrentPosition = async (track:Track, api: SpotifyApi) => {

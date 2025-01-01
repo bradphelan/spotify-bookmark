@@ -6,38 +6,22 @@
 	let track: Track = data.track;
 
 	import { onMount } from 'svelte';
-	import { spotifyPlayer, isPlayerReady } from '$lib/stores/spotify';
+	import { activeDevice, spotifyPlayer} from '$lib/stores/spotify';
 	import { ListBox, ListBoxItem } from '@skeletonlabs/skeleton';
 
 	const seekToPosition = async (ms: number) => {
-		//$spotifyPlayer.player.startResumePlayback( "", undefined, [`spotify:track:${track.id}`],  undefined, ms);
 		$spotifyPlayer?.player.seekToPosition(ms);
 	};
 
-	let devices = $state<Devices>();
-
-	let hasActiveDevice = $derived(devices?.devices.find((device:Device) => device.is_active === true));
-
-    let trackInfo = $state<any | undefined>();
+    let trackInfo = $state<SpotifyTrack | undefined>();
 
 	onMount(async () => {
-		devices = await $spotifyPlayer.player.getAvailableDevices();
-        // set a timer to check for active device every 5 seconds
-        let interval = setInterval(async () => {
-            devices = await $spotifyPlayer.player.getAvailableDevices();
-        }, 5000);
-
 		try {
 			await $spotifyPlayer?.player.startResumePlayback('', undefined, [`spotify:track:${track.id}`]);
 		} catch (error) {
 			console.error('Error starting playback:', error);
 		}
-
         trackInfo = (await $spotifyPlayer?.tracks.get(track.id));
-
-		return () => {
-			clearInterval(interval);
-		}
 	});
 </script>
 
@@ -100,17 +84,10 @@
 	<button
 		type="button"
 		class="btn-base rounded-3xl m-2 variant-filled-primary"
-		onclick={() => bookMarkCurrentPosition(track, $spotifyPlayer)}
-		disabled={!hasActiveDevice}
-		class:variant-filled-surface={hasActiveDevice}
-		class:variant-filled-={!hasActiveDevice}
+		onclick={() => {if ($spotifyPlayer) bookMarkCurrentPosition(track, $spotifyPlayer);}}
+		disabled={!$activeDevice}
+		class:variant-filled-surface={$activeDevice}
 	>
 		<span class="span">bookmark</span>
 	</button>
-    {#if hasActiveDevice}
-        <p>Active device: {devices?.devices.find((device) => device.is_active === true)?.name}</p>
-    {:else}
-        <p class="text-error-900 text-xl">No active spotify device</p>
-        <p>Open spotify on one of your devices and play a tune on it to activate it.</p>
-    {/if}
 </div>

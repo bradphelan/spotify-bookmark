@@ -1,40 +1,67 @@
-<script>
-	import { onMount } from 'svelte';
-	import { authSpotify,  spotifyPlayer, isPlayerReady } from '$lib/stores/spotify';
-    import { AppBar, AppShell, TabAnchor, TabGroup} from '@skeletonlabs/skeleton';
-    import "../app.css"
+<script lang="ts">
+	import { onDestroy, onMount } from 'svelte';
+	import {
+		authSpotify,
+		spotifyPlayer,
+		activeDevice,
+		devices,
+		playbackState
+	} from '$lib/stores/spotify';
+	import { AppBar, AppShell, TabAnchor, TabGroup } from '@skeletonlabs/skeleton';
+	import {
+		SpotifyApi,
+		type Device,
+		type Devices,
+		type Track as SpotifyTrack
+	} from '@spotify/web-api-ts-sdk';
+	import '../app.css';
 	import { base } from '$app/paths';
-    onMount(() => {
-        authSpotify();
-    });
+
+	let interval: NodeJS.Timeout | undefined = undefined;
+	onMount(async () => {
+		authSpotify();
+	});
+
+	onDestroy(() => {
+		if (interval) {
+			clearInterval(interval);
+		}
+		interval = undefined;
+	});
 </script>
+
 <AppShell>
+	<svelte:fragment slot="header">
+		<AppBar>Spotify Bookmarks</AppBar>
+		<TabGroup
+			justify="justify-left"
+			active="variant-filled-surface"
+			hover="hover:variant-soft-primary"
+			flex="flex-1 lg:flex-none"
+			rounded=""
+			border=""
+			class="bg-surface-100-800-token w-full"
+		>
+			<TabAnchor href="{base}/tracks">Tracks</TabAnchor>
+		</TabGroup>
+	</svelte:fragment>
 
-<svelte:fragment slot="header">
-    <AppBar>Spotify Bookmarks</AppBar>
-    <TabGroup
-        justify="justify-center"
-        active="variant-filled-primary"
-        hover="hover:variant-soft-primary"
-        flex="flex-1 lg:flex-none"
-        rounded=""
-        border=""
-        class="bg-surface-100-800-token w-full"
-    >
-        <TabAnchor href="{base}/tracks">Tracks</TabAnchor>
-    </TabGroup>
-</svelte:fragment>
+	{#if $spotifyPlayer}
+		<slot />
+	{:else}
+		Waiting for Spotify to authenticate...
+	{/if}
 
-{#if $spotifyPlayer}
-	<slot />
-{:else}
-    Waiting for Spotify to authenticate...
-{/if}
-
-<svelte:fragment slot="footer">
-    <div class="footer">
-        <p>© 2025 Brad Phelan</p>
-        <p><a href="/privacy">privacy policy</a></p>
-    </div>
-</svelte:fragment>
+	<svelte:fragment slot="footer">
+		<div class="footer m-1 text-center">
+			{#if $activeDevice}
+				<p>Active device: {$activeDevice?.name}</p>
+			{:else}
+				<p class="text-xl text-error-900">No active spotify device</p>
+				<p>Open spotify on one of your devices and play a tune on it to activate it.</p>
+			{/if}
+			<p>© 2025 Brad Phelan</p>
+			<p><a href="/privacy">privacy policy</a></p>
+		</div>
+	</svelte:fragment>
 </AppShell>

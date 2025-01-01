@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { tracks, resetTracks, addTrackUri, removeTrack } from '$lib/tracks.svelte';
-	import { spotifyPlayer, isPlayerReady } from '$lib/stores/spotify';
+	import { spotifyPlayer} from '$lib/stores/spotify';
 	import type { PlaybackState } from '@spotify/web-api-ts-sdk';
 	import { base } from '$app/paths';
 
@@ -22,7 +22,7 @@
 	});
 
 	let addTrack = async () => {
-		if (currentTrack) await addTrackUri($spotifyPlayer, currentTrack?.item.href);
+		if (currentTrack && $spotifyPlayer) await addTrackUri($spotifyPlayer, currentTrack?.item.href);
 	};
 </script>
 
