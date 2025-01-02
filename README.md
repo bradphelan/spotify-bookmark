@@ -4,6 +4,8 @@
 
 Spotify Bookmark is a web application that allows users to bookmark specific positions in Spotify tracks. This application is built using SvelteKit and integrates with the Spotify Web API.
 
+See [demo][spotifyBookmarkDemo].
+
 ## Features
 
 - **Bookmark Tracks**: Users can bookmark specific positions in tracks and add notes to each bookmark.
@@ -64,3 +66,6 @@ The application can be deployed to GitHub Pages using the provided GitHub Action
 This project is licensed under the MIT License.
 
 For more information, visit the [GitHub repository](https://github.com/bradphelan/spotify-bookmark).
+
+
+[spotifyBookmarkDemo]: https://bradphelan.github.io/spotify-bookmark/
