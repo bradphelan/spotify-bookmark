@@ -1,38 +1,66 @@
-# sv
+# Spotify Bookmark
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+## Overview
 
-## Creating a project
+Spotify Bookmark is a web application that allows users to bookmark specific positions in Spotify tracks. This application is built using SvelteKit and integrates with the Spotify Web API.
 
-If you're seeing this, you've probably already done this step. Congrats!
+## Features
 
-```bash
-# create a new project in the current directory
-npx sv create
+- **Bookmark Tracks**: Users can bookmark specific positions in tracks and add notes to each bookmark.
+- **Track Management**: Add, remove, and reset tracks in the bookmark list.
+- **Spotify Integration**: Authenticate with Spotify and interact with the Spotify player.
 
-# create a new project in my-app
-npx sv create my-app
-```
+## Project Structure
 
-## Developing
+- **src**: Contains the source code for the application.
+    - **lib**: Contains utility functions and stores.
+        - `spotify.ts`: Manages Spotify API interactions and stores.
+        - `storage.svelte.ts`: Provides a wrapper for local storage.
+        - `tracks.svelte.ts`: Manages track and bookmark operations.
+    - **routes**: Contains the SvelteKit routes.
+        - `+layout.svelte`: Main layout for the application.
+        - `+page.svelte`: Redirects to the tracks page.
+        - `privacy/+page.svelte`: Privacy policy page.
+        - `tracks/+page.svelte`: Displays the list of bookmarked tracks.
+        - `tracks/[slug]/+page.svelte`: Displays details and bookmarks for a specific track.
+- **.github/workflows**: Contains GitHub Actions workflows for deploying the application.
+- **public**: Contains static assets.
+- **styles**: Contains global styles.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+## Installation
 
-```bash
-npm run dev
+1. Clone the repository:
+     ```sh
+     git clone https://github.com/bradphelan/spotify-bookmark.git
+     cd spotify-bookmark
+     ```
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+2. Install dependencies:
+     ```sh
+     npm install
+     ```
 
-## Building
+3. Run the development server:
+     ```sh
+     npm run dev
+     ```
 
-To create a production version of your app:
+## Deployment
 
-```bash
-npm run build
-```
+The application can be deployed to GitHub Pages using the provided GitHub Actions workflow. Ensure the `base` path in `svelte.config.js` is set correctly for production.
 
-You can preview the production build with `npm run preview`.
+## Configuration
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+- **.npmrc**: Enforces strict engine compatibility.
+- **.prettierrc**: Configuration for Prettier code formatting.
+- **.gitignore**: Specifies files and directories to ignore in Git.
+- **postcss.config.js**: Configuration for PostCSS.
+- **tailwind.config.ts**: Configuration for Tailwind CSS.
+- **vite.config.ts**: Configuration for Vite.
+- **tsconfig.json**: TypeScript configuration.
+
+## License
+
+This project is licensed under the MIT License.
+
+For more information, visit the [GitHub repository](https://github.com/bradphelan/spotify-bookmark).
